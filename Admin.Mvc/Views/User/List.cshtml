@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Kullanıcı Listele";
+
+    var users = new[]
+    {
+        new { Id = 1, FullName = "Ayşe Yılmaz", Email = "ayse@mail.com", IsSeller = false, IsActive = true },
+        new { Id = 2, FullName = "Mehmet Kaya", Email = "mehmet@mail.com", IsSeller = true, IsActive = true },
+        new { Id = 3, FullName = "Elif Demir", Email = "elif@mail.com", IsSeller = false, IsActive = false },
+    };
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Kullanıcılar</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ad Soyad</th>
+                        <th>E-posta</th>
+                        <th>Satıcı</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var u in users)
+                    {
+                        <tr>
+                            <td>@u.Id</td>
+                            <td>@u.FullName</td>
+                            <td>@u.Email</td>
+                            <td>
+                                @if (u.IsSeller)
+                                {
+                                    <span class="badge badge-success">Evet</span>
+                                }
+                                else
+                                {
+
+                                    <span class="badge badge-secondary">Hayır</span>
+                                }
+                            </td>
+                            <td>
+                                @if (u.IsActive)
+                                {
+                                    <span class="badge badge-primary">Aktif</span>
+                                }
+                                else
+                                {
+
+                                    <span class="badge badge-danger">Pasif</span>
+                                }
+                            </td>
+                            <td class="text-nowrap">
+                                <a class="btn btn-sm btn-outline-primary"
+                                   asp-controller="User" asp-action="Approve" asp-route-id="@u.Id">
+                                    Satıcı Onayı
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+

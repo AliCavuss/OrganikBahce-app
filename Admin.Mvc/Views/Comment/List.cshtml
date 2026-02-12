@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Yorum Listele";
+
+    var comments = new[]
+    {
+        new { Id = 10, Product = "Elma", User = "Ayşe", Stars = 5, Text = "Çok taze geldi.", IsApproved = false },
+        new { Id = 11, Product = "Armut", User = "Mehmet", Stars = 4, Text = "Güzel ama küçük.", IsApproved = true },
+        new { Id = 12, Product = "Muz", User = "Elif", Stars = 3, Text = "İdare eder.", IsApproved = false },
+    };
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Yorumlar</h6>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ürün</th>
+                        <th>Kullanıcı</th>
+                        <th>Yıldız</th>
+                        <th>Yorum</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in comments)
+                    {
+                        <tr>
+                            <td>@c.Id</td>
+                            <td>@c.Product</td>
+                            <td>@c.User</td>
+                            <td><span class="badge badge-warning">@c.Stars ★</span></td>
+                            <td>@c.Text</td>
+                            <td>
+                                @if (c.IsApproved)
+                                {
+                                    <span class="badge badge-success">Onaylı</span>
+                                }
+                                else
+                                {
+
+                                    <span class="badge badge-secondary">Bekliyor</span>
+                                }
+                            </td>
+                            <td class="text-nowrap">
+                                <a class="btn btn-sm btn-outline-success"
+                                   asp-controller="Comment" asp-action="Approve" asp-route-id="@c.Id">
+                                    Onayla
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

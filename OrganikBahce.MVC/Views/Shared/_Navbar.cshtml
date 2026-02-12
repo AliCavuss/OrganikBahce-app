@@ -1,0 +1,157 @@
+﻿<!-- Navbar start -->
+<div class="container-fluid fixed-top">
+    <div class="container topbar bg-primary d-none d-lg-block">
+        <div class="d-flex justify-content-between">
+            <div class="top-info ps-2">
+                <small class="me-3">
+                    <i class="fas fa-map-marker-alt me-2 text-secondary"></i>
+                    <a href="#" class="text-white">Beykoz/İstanbul</a>
+                </small>
+                <small class="me-3">
+                    <i class="fas fa-envelope me-2 text-secondary"></i>
+                    <a href="#" class="text-white">E-mail@organik-bahce@gmail.com</a>
+                </small>
+            </div>
+            <div class="top-link pe-2">
+                <a href="#" class="text-white"><small class="text-white mx-2">Gizlilik Politikası</small>/</a>
+                <a href="#" class="text-white"><small class="text-white mx-2">Kullanım Şartları</small>/</a>
+                <a href="#" class="text-white"><small class="text-white ms-2">Satış ve İade</small></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-0">
+        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <a asp-controller="Home" asp-action="Index" class="navbar-brand">
+                <img src="~/img/logo.png"  alt="">
+                @* <h1 class="text-primary display-6">Organik Bahçe</h1> *@
+            </a>
+
+            <button class="navbar-toggler py-2 px-3" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-primary"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a>
+                    <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">Hakkımızda</a>
+                    <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Listing">Ürünler</a>
+                    <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Listing">Fırsat Paketleri</a>
+                    <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Testimonial">Üreticilerimiz</a>                    
+                    <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Contact">İletişim</a>
+                </div>
+                <div class="d-flex m-3 me-0">
+                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle position-relative me-4 my-auto" data-bs-toggle="dropdown">
+                            <i class="fa fa-shopping-bag fa-2x"></i>
+                            <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 30px; height: 20px; min-width: 20px;">3</span>
+                        </a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                            <a class="nav-item nav-link" asp-area="" asp-controller="Cart" asp-action="Edit">Sepetim</a>
+                            <a class="nav-item nav-link" asp-area="" asp-controller="Profile" asp-action="MyOrders">Siparişlerim</a>
+                            <a class="nav-item nav-link" asp-area="" asp-controller="Home" asp-action="Testimonial">Teslimat ve İade</a>
+
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle position-relative me-4 my-auto" data-bs-toggle="dropdown">
+                            <i class="fas fa-user fa-2x"></i>
+                        </a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                             <a class="nav-item nav-link" asp-area="" asp-controller="Auth" asp-action="Login">Giriş Yap</a>
+                            <a class="nav-item nav-link" asp-area="" asp-controller="Auth" asp-action="Register">Üye Ol</a>
+                            <a class="nav-item nav-link" asp-area="" asp-controller="Auth" asp-action="ForgotPassword">Şifremi Unuttum</a>
+                            <a class="nav-item nav-link" asp-area="" asp-controller="Profile" asp-action="Details">Kullanıcı Bilgilerim</a>
+                            <a href="#" class="dropdown-item">Adreslerim</a>
+                            <a class="nav-item nav-link" asp-area="" asp-controller="Auth" asp-action="Logout">Çıkış Yap</a>
+                        </div>
+                    </div>
+
+
+                    @* <a href="#" class="position-relative me-4 my-auto">
+                        <i class="fa fa-shopping-bag fa-2x"></i>
+                       
+                        <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                    </a> *@
+                    @* <a href="#" class="my-auto">
+                        <i class="fas fa-user fa-2x"></i>
+                    </a> *@
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Navbar End -->
+@* <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <a asp-controller="Home" asp-action="Index" class="nav-item nav-link active">AnaSayfa</a>
+                    <a asp-controller="Home" asp-action="Listing" class="nav-item nav-link">Ürünler</a>                   
+                    <a asp-controller="Home" asp-action="AboutUs" class="nav-item nav-link">Hakkımızda</a>                    
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Sipariş İşlemleri</a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                                  
+                            <a asp-controller="Order" asp-action="Create" class="dropdown-item">Sipariş Oluştur</a>                            
+                            <a asp-controller="Order" asp-action="Details" class="dropdown-item">Sipariş Detayları</a>                            
+                            <a asp-controller="Profil" asp-action="MyOrders" class="dropdown-item">Siparişlerim</a>                            
+                            
+                        </div>
+                    </div>
+
+                    <a asp-controller="Home" asp-action="Contact" class="nav-item nav-link">İletişim</a>
+                </div>
+
+                <div class="d-flex m-3 me-0">
+                    <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
+                            data-bs-toggle="modal"
+                            data-bs-target="#searchModal">
+                        <i class="fas fa-search text-primary"></i>
+                    </button>                  
+                   
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kullanıcı İşlemleri</a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0">
+
+                            <a asp-controller="Auth" asp-action="Register" class="dropdown-item">Kullanıcı Kaydı</a>
+                            <a asp-controller="Auth" asp-action="Login" class="dropdown-item">Kullanıcı Girişi</a>
+                            <a asp-controller="Auth" asp-action="Logout" class="dropdown-item">Kullanıcı Çıkışı</a>
+                            <a asp-controller="Auth" asp-action="ForgotPassword" class="dropdown-item">Şifremi Unuttum</a>
+                            <a asp-controller="Cart" asp-action="Edit" class="dropdown-item">Sepetteki Ürünleri Düzenle</a>
+
+                        </div>
+                    </div>
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Satıcı İşlemleri</a>
+                        <div class="dropdown-menu m-0 bg-secondary rounded-0">
+
+                            <a asp-controller="Product" asp-action="Create" class="dropdown-item">Ürün Oluşturma</a>
+                            <a asp-controller="Product" asp-action="Delete" class="dropdown-item">Ürün Silme</a>
+                            <a asp-controller="Product" asp-action="Edit" class="dropdown-item">Ürün Düzenleme</a>
+                            <a asp-controller="Profil" asp-action="MyProducts" class="dropdown-item">Ürün Listeleme</a>
+                            
+
+                        </div>
+                    </div>                 
+                    
+
+                    <a asp-controller="Auth" asp-action="Login" class="my-auto">
+                        <i class="fas fa-user fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+ *@

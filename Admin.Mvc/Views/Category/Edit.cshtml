@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Kategori Düzenle";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Kategori Bilgileri</h6>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-info">
+            Düzenlenen Kategori Id: <strong>@ViewBag.Id</strong>
+        </div>
+
+        <form>
+            <div class="form-group">
+                <label>Kategori Adı</label>
+                <input class="form-control" placeholder="Örn: Meyveler" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save mr-1"></i> Kaydet
+            </button>
+            <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">İptal</a>
+        </form>
+    </div>
+</div>

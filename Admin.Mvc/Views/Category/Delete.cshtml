@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Kategori Sil";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">@ViewData["Title"]</h1>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-danger">Silme Onayı</h6>
+    </div>
+    <div class="card-body">
+        <div class="alert alert-warning mb-4">
+            Silinecek Kategori Id: <strong>@ViewBag.Id</strong>
+        </div>
+
+        <a class="btn btn-danger mr-2" asp-controller="Home" asp-action="Index">
+            <i class="fas fa-trash mr-1"></i> Sil
+        </a>
+        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">
+            Vazgeç
+        </a>
+    </div>
+</div>
+yout içindeyim.</p>
