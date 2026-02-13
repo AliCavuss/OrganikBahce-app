@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using App.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,16 @@ namespace App.Data
         {
             
         }
+
+
+       //SQL'de işlenecek 
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+
+        //    modelBuilder.Entity<ProductEntity>().Property("Enabled")
+        //        .HasDefaultValueSql("1");
+        //}
     }
 }
