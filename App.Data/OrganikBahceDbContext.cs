@@ -1,4 +1,5 @@
-﻿using App.Data.Entities;
+﻿using App.Data.Configuration;
+using App.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,14 +17,11 @@ namespace App.Data
         }
 
 
-       //SQL'de işlenecek 
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
 
-        //    modelBuilder.Entity<ProductEntity>().Property("Enabled")
-        //        .HasDefaultValueSql("1");
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrganikBahceDbContext).Assembly);
+        }
     }
 }

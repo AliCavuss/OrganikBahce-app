@@ -8,25 +8,12 @@ using System.Threading.Tasks;
 
 namespace App.Data.Entities
 {
-    internal class CategoryEntity
+    public class CategoryEntity
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Required]
         public int Id { get; set; }
-
-
-        [Required, StringLength(100, MinimumLength = 2)]
-        public string Name { get; set; }
-
-
-        [Required, StringLength(6, MinimumLength = 3)]
-        public string Color { get; set; }
-
-
-        [Required, StringLength(50, MinimumLength = 2)]
-        public string IconCssClass { get; set; }
-
-
-        [Required]
+        public string Name { get; set; } = string.Empty;
+        public string Color { get; set; } = string.Empty;
+        public string IconCssClass { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
     }
 }

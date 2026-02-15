@@ -9,20 +9,13 @@ using System.Threading.Tasks;
 
 namespace App.Data.Entities
 {
-    internal class CartItemEntity
+    public class CartItemEntity
     {
 
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity), Required]
         public int Id { get; set; }
         public int UserId { get; set; }
         public int ProductId { get; set; }
-
-
-        [Required, MinLength(1)]
         public byte Quantity { get; set; }
-
-
-        [Required]
         public DateTime CreatedAt { get; set; }
 
 
@@ -30,11 +23,11 @@ namespace App.Data.Entities
 
         #region ForeignKey
         //[ForeignKey(nameof(ProductId))]
-        [JsonIgnore] // bu olmadığında order ve customer'lar arasında sonsuz bir döngü oluşur.
-        public ProductEntity Product { get; set; }
+        [JsonIgnore]
+        public ProductEntity Product { get; set; } = null!;
 
         [JsonIgnore]
-        public UserEntity User { get; set; }
+        public UserEntity User { get; set; } = null!;
 
         #endregion
     }
