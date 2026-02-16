@@ -55,7 +55,7 @@ namespace App.Data.Configuration
             // Enabled
             builder.Property(u => u.Enabled)
                    .IsRequired()
-                   .HasDefaultValue("1");
+                   .HasDefaultValue(true);
 
             // CreatedAt
             builder.Property(u => u.CreatedAt)
