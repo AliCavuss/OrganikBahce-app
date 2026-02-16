@@ -50,8 +50,9 @@ namespace App.Data.Configuration
 
             // IsConfirmed
             builder.Property(p => p.IsConfirmed)
-                   .IsRequired()
-                   .HasDefaultValue("0");
+                .IsRequired()
+                .HasDefaultValue(false);   
+
 
             // CreatedAt
             builder.Property(p => p.CreatedAt)

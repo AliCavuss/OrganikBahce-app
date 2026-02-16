@@ -64,7 +64,7 @@ namespace App.Data.Configuration
             // Enabled
             builder.Property(p => p.Enabled)
                    .IsRequired()
-                   .HasDefaultValue("1");
+                   .HasDefaultValue(true);
         }
     }
 }
