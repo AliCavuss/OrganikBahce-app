@@ -1,11 +1,6 @@
 ﻿using App.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace App.Data.Configuration
 {
@@ -15,42 +10,34 @@ namespace App.Data.Configuration
         {
             builder.ToTable("CartItems");
 
-            // Primary Key
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Id)
-               .ValueGeneratedOnAdd()
-               .IsRequired();
+                   .ValueGeneratedOnAdd()
+                   .IsRequired();
 
-            //UserId
             builder.Property(c => c.UserId)
-                .IsRequired();
+                   .IsRequired();
 
             builder.HasOne(c => c.User)
-                .WithMany()
-                .HasForeignKey(c => c.UserId);
+                   .WithMany()
+                   .HasForeignKey(c => c.UserId)
+                   .OnDelete(DeleteBehavior.NoAction); 
 
-            //ProductId
             builder.Property(c => c.ProductId)
                    .IsRequired();
 
             builder.HasOne(c => c.Product)
                    .WithMany()
-                   .HasForeignKey(c => c.ProductId);
+                   .HasForeignKey(c => c.ProductId)
+                   .OnDelete(DeleteBehavior.Restrict); 
 
-            // Quantity
             builder.Property(c => c.Quantity)
-                .IsRequired()
-                .HasMaxLength(1);
+                   .IsRequired();
 
-
-            //CreatedAt
             builder.Property(c => c.CreatedAt)
-                .IsRequired()
-                .HasDefaultValueSql("GETDATE()");
-
+                   .IsRequired()
+                   .HasDefaultValueSql("GETDATE()");
         }
-
-     }
-  
+    }
 }
