@@ -5,25 +5,29 @@ namespace OrganikBahce.MVC.Controllers
     public class ProfileController : Controller
     {
 
-       // [HttpGet("profile")]
+        [Route("/profile")]
+        [HttpGet]
         public IActionResult Details()
         {
             return View();
         }
 
-      //  [HttpGet("profile/edit")]
-        public IActionResult Edit()
+        [Route("/profile")]
+        [HttpPost]
+        public IActionResult Edit([FromForm] object editMyProfileModel)
         {
-            return View();
+            return RedirectToAction(nameof(Details));
         }
 
-       // [HttpGet("profile/orders")]
+        [Route("/my-orders")]
+        [HttpGet]
         public IActionResult MyOrders()
         {
             return View();
         }
 
-       // [HttpGet("profile/products")]
+        [Route("/my-products")]
+        [HttpGet]
         public IActionResult MyProducts()
         {
             return View();

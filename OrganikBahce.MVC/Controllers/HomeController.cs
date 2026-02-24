@@ -6,32 +6,42 @@ namespace OrganikBahce.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        // [HttpGet("")]
+        
         public IActionResult Index()
         {
             return View();
         }
 
-        // [HttpGet("about-us")]
-
+        [Route("/about-us")]
+        [HttpGet]
         public IActionResult AboutUs()
         {
             return View();
         }
 
-        // [HttpGet("contact")]
+        [Route("/contact")]
+        [HttpGet]
         public IActionResult Contact()
         {
             return View();
         }
 
-        // [HttpGet("products")]
+        [Route("/contact")]
+        [HttpPost]
+        public IActionResult Contact([FromForm] object newContactMessageModel)
+        {
+            return View();
+        }
+
+        [Route("/product/list")]
+        [HttpGet]
         public IActionResult Listing()
         {
             return View();
         }
 
-        // [HttpGet("product/{categoryName}-{title}-{id:int}/details")]
+        [Route("/product/{productId:int}/details")]
+        [HttpGet]
         public IActionResult ProductDetail()
         {
             return View();
@@ -48,6 +58,3 @@ namespace OrganikBahce.MVC.Controllers
         }
     }
 }
-// test commit
-// test-branch deneme 
-// test1

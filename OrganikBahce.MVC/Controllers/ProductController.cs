@@ -4,29 +4,49 @@ namespace OrganikBahce.MVC.Controllers
 {
     public class ProductController : Controller
     {
-       // [HttpGet("product/create")]
+        [Route("/product")]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-     //   [HttpGet("product/{id:int}/edit")]
-        public IActionResult Edit()
+
+        [Route("/product")]
+        [HttpPost]
+        public IActionResult Create([FromForm] object newProductModel)
         {
             return View();
         }
 
-      //  [ValidateAntiForgeryToken]
-        //[HttpPost("product/{id:int}/delete")]
-        public IActionResult Delete()
+        [Route("/product/{productId:int}/edit")]
+        [HttpGet]
+        public IActionResult Edit([FromRoute] int productId)
         {
             return View();
         }
 
-      //  [HttpPost("product/{id:int}/comment")]
-        public IActionResult Comment()
+        [Route("/product/{productId:int}/edit")]
+        [HttpPost]
+        public IActionResult Edit([FromRoute] int productId, [FromForm] object editProductModel)
         {
             return View();
+        }
+
+        [Route("/product/{productId:int}/delete")]
+        [HttpGet]
+        public IActionResult Delete([FromRoute] int productId)
+        {
+            return View();
+        }
+
+        [Route("/product/{productId:int}/comment")]
+        [HttpPost]
+        public IActionResult Comment([FromRoute] int productId, [FromForm] object newProductCommentModel)
+        {
+           
+
+            return RedirectToAction(nameof(HomeController.ProductDetail), "Home", new { productId });
         }
 
         public IActionResult Bestseller()
