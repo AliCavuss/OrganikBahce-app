@@ -4,13 +4,16 @@ namespace OrganikBahce.MVC.Controllers
 {
     public class OrderController : Controller
     {
-       // [HttpGet("order/create")]
+        [Route("/order")]
+        [HttpPost]
         public IActionResult Create()
         {
-            return View();
+            var orderId = 1;
+            return RedirectToAction(nameof(Details), new { orderId });
         }
-        //[HttpGet("order/{id:int}/details")]
-        public IActionResult Details()
+        [Route("/order/{orderId:int}/details")]
+        [HttpGet]
+        public IActionResult Details([FromRoute] int orderId)
         {
             return View();
         }

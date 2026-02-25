@@ -4,15 +4,33 @@ namespace OrganikBahce.MVC.Controllers
 {
     public class CartController : Controller
     {
-        //[HttpPost("cart/add/{productId:int}")]
-        public IActionResult AddProduct()
+        [Route("/add-to-cart/{productId:int}")]
+        [HttpGet]
+        public IActionResult AddProduct([FromRoute] int productId)
+        {
+            // add 1 product...
+
+            var prevUrl = Request.Headers.Referer.FirstOrDefault();
+
+            if (prevUrl is null)
+            {
+                return RedirectToAction(nameof(Edit));
+            }
+
+            return Redirect(prevUrl);
+        }
+
+
+        [Route("/cart")]
+        [HttpGet]
+        public IActionResult Edit()
         {
             return View();
         }
 
-
-       // [HttpGet("cart")]
-        public IActionResult Edit()
+        [Route("/cart")]
+        [HttpPost]
+        public IActionResult Edit([FromForm] object editCartModel)
         {
             return View();
         }
