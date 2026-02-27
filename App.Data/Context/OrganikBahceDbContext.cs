@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 
-namespace App.Data
+namespace App.Data.Context
 {
     public class OrganikBahceDbContext : DbContext
     {
@@ -11,14 +11,15 @@ namespace App.Data
         {
         }
 
-        
+
         public DbSet<RoleEntity> Roles => Set<RoleEntity>();
         public DbSet<UserEntity> Users => Set<UserEntity>();
         public DbSet<CategoryEntity> Categories => Set<CategoryEntity>();
+        public DbSet<ProductEntity> Products => Set<ProductEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrganikBahceDbContext).Assembly);
 
             base.OnModelCreating(modelBuilder);
@@ -40,7 +41,7 @@ namespace App.Data
                     Email = "admin@organikbahce.com",
                     FirstName = "Admin",
                     LastName = "User",
-                    Password = "Admin123!", 
+                    Password = "Admin123!",
                     RoleId = 3,
                     Enabled = true,
                     CreatedAt = seedTime
@@ -59,6 +60,27 @@ namespace App.Data
                 new CategoryEntity { Id = 8, Name = "Atıştırmalık", Color = "20c997", IconCssClass = "fa-solid fa-cookie-bite", CreatedAt = seedTime },
                 new CategoryEntity { Id = 9, Name = "Temel Gıda", Color = "0d6efd", IconCssClass = "fa-solid fa-bread-slice", CreatedAt = seedTime },
                 new CategoryEntity { Id = 10, Name = "Baharat", Color = "adb5bd", IconCssClass = "fa-solid fa-pepper-hot", CreatedAt = seedTime }
+            );
+
+            modelBuilder.Entity<ProductEntity>().HasData(
+                  new ProductEntity
+                  {
+                      Id = 1,
+                      Name = "Organik Domates",
+                      Details = "Taze ve doğal köy domatesi",
+                      Price = 35,
+                      CategoryId = 1, 
+                      CreatedAt = seedTime
+                  },
+                  new ProductEntity
+                  {
+                      Id = 2,
+                      Name = "Organik Elma",
+                      Details = "Tatlı kırmızı elma",
+                      Price = 25,
+                      CategoryId = 2,
+                      CreatedAt = seedTime
+                  }
             );
         }
     }

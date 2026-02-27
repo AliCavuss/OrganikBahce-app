@@ -1,9 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Data.Context;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OrganikBahce.MVC.Controllers
 {
     public class CartController : Controller
     {
+
+        private readonly OrganikBahceDbContext _db;
+
+        public CartController(OrganikBahceDbContext db)
+        {
+            _db = db;
+        }
+
         //[Route("/add-to-cart/{productId:int}", Name = "AddToCart")]
         //[HttpGet]
         //public IActionResult AddProduct([FromRoute] int productId)

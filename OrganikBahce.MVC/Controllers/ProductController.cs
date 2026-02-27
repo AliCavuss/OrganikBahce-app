@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Data.Context;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OrganikBahce.MVC.Controllers
 {
     public class ProductController : Controller
     {
+        private readonly OrganikBahceDbContext _db;
+
+        public ProductController(OrganikBahceDbContext db)
+        {
+            _db = db;
+        }
         [Route("/product")]
         [HttpGet]
         public IActionResult Create()

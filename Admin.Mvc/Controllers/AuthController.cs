@@ -1,10 +1,18 @@
 ﻿using Admin.Mvc.Models.ViewModels;
+using App.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Mvc.Controllers
 {
     public class AuthController : Controller
     {
+        private readonly OrganikBahceDbContext _db;
+
+        public AuthController(OrganikBahceDbContext db)
+        {
+            _db = db;
+        }
+
         [Route("/login")]
         [HttpGet]
         public IActionResult Login()

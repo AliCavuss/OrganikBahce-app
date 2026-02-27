@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Data.Context;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OrganikBahce.MVC.Controllers
 {
     public class OrderController : Controller
     {
+        private readonly OrganikBahceDbContext _db;
+
+        public OrderController(OrganikBahceDbContext db)
+        {
+            _db = db;
+        }
         [Route("/order")]
         [HttpPost]
         public IActionResult Create()
