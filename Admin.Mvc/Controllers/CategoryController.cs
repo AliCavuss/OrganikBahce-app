@@ -1,4 +1,5 @@
-﻿using App.Data.Context;
+﻿using Admin.Mvc.Models.ViewModels;
+using App.Data.Context;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Mvc.Controllers
@@ -11,13 +12,15 @@ namespace Admin.Mvc.Controllers
         {
             _db = db;
         }
-        public IActionResult Create()
+
+        [HttpPost]
+        public IActionResult Create(CategoryCreateViewModel vm)
         {
             return View();
         }
-        public IActionResult Edit(int id)
+        public IActionResult Edit(CategoryEditViewModel vm)
         {
-            ViewBag.Id = id;
+          
             return View();
         }
         public IActionResult Delete(int id)

@@ -1,6 +1,25 @@
-﻿ <!-- Single Page Header start -->
-<div class="container-fluid page-header py-5">
-</div>
-<!-- Single Page Header End -->
+﻿@model OrganikBahce.MVC.Models.ViewModels.OrderCreateViewModel
 
-<h1> Sipariş Oluşturma </h1>
+<div class="container mt-5">
+    <h2 class="mb-4">Sipariş Bilgileri</h2>
+
+    <form method="post" action="/order">
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label asp-for="Address" class="form-label"></label>
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+            Siparişi Tamamla
+        </button>
+
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

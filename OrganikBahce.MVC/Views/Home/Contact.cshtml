@@ -21,11 +21,32 @@
                 </div>
 
                 <div class="col-lg-7">
-                    <form action="" class="">
-                        <input type="text" class="w-100 form-control border-0 py-3 mb-4" placeholder="Adınız">
-                        <input type="email" class="w-100 form-control border-0 py-3 mb-4" placeholder="E-Postanızı Giriniz">
-                        <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" placeholder="Mesajınız"></textarea>
-                        <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Gönder</button>
+                    <form method="post" action="/contact">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <input type="text"
+                               class="w-100 form-control border-0 py-3 mb-4"
+                               name="FullName"
+                               placeholder="Adınız"
+                               required>
+
+                        <input type="email"
+                               class="w-100 form-control border-0 py-3 mb-4"
+                               name="Email"
+                               placeholder="E-Postanızı Giriniz"
+                               required>
+
+                        <textarea class="w-100 form-control border-0 mb-4"
+                                  rows="5"
+                                  name="Message"
+                                  placeholder="Mesajınız"
+                                  required></textarea>
+
+                        <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary"
+                                type="submit">
+                            Gönder
+                        </button>
+
                     </form>
                 </div>
                 <div class="col-lg-5">

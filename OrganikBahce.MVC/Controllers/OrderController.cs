@@ -1,5 +1,6 @@
 ﻿using App.Data.Context;
 using Microsoft.AspNetCore.Mvc;
+using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
@@ -11,13 +12,27 @@ namespace OrganikBahce.MVC.Controllers
         {
             _db = db;
         }
+
         [Route("/order")]
-        [HttpPost]
+        [HttpGet]
         public IActionResult Create()
         {
-            var orderId = 1;
-            return RedirectToAction(nameof(Details), new { orderId });
+            return View();
         }
+
+
+        [Route("/order")]
+        [HttpPost]
+        public IActionResult Create(OrderCreateViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+            var orderId = 1; // şimdilik sabit
+            return RedirectToAction(nameof(Details), new { orderId = orderId });
+        }
+
         [Route("/order/{orderId:int}/details")]
         [HttpGet]
         public IActionResult Details([FromRoute] int orderId)

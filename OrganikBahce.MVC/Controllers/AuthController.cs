@@ -20,6 +20,19 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [Route("/register")]
+        [HttpPost]
+        public IActionResult Register(AuthRegisterViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            
+            return View();
+        }
+
         [Route("/login")]
         [HttpGet]
         public IActionResult Login()
@@ -29,8 +42,13 @@ namespace OrganikBahce.MVC.Controllers
 
         [Route("/login")]
         [HttpPost]
-        public IActionResult Login([FromForm] LoginViewModel loginModel)
+        public IActionResult Login([FromForm] AuthLoginViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
             return View();
         }
         [Route("/forgot-password")]
@@ -42,22 +60,31 @@ namespace OrganikBahce.MVC.Controllers
 
         [Route("/forgot-password")]
         [HttpPost]
-        public IActionResult ForgotPassword([FromForm] object forgotPasswordMailModel)
+        public IActionResult ForgotPassword([FromForm] AuthForgotPasswordViewModel vm )
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
             return View();
         }
 
         [Route("/renew-password/{verificationCode}")]
         [HttpGet]
-        public IActionResult RenewPassword([FromRoute] string verificationCode)
+        public IActionResult RenewPassword(string verificationCode)
         {
+            ViewBag.VerificationCode = verificationCode;
             return View();
         }
 
         [Route("/renew-password")]
         [HttpPost]
-        public IActionResult RenewPassword([FromForm] object changePasswordModel)
+        public IActionResult RenewPassword([FromForm] AuthRenewPasswordViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
             return View();
         }
         [Route("/logout")]
