@@ -1,5 +1,7 @@
 ﻿using App.Data.Context;
+using App.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
+using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
@@ -21,8 +23,12 @@ namespace OrganikBahce.MVC.Controllers
 
         [Route("/product")]
         [HttpPost]
-        public IActionResult Create([FromForm] object newProductModel)
+        public IActionResult Create([FromForm] ProductCreateViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
             return View();
         }
 
@@ -35,8 +41,12 @@ namespace OrganikBahce.MVC.Controllers
 
         [Route("/product/{productId:int}/edit")]
         [HttpPost]
-        public IActionResult Edit([FromRoute] int productId, [FromForm] object editProductModel)
+        public IActionResult Edit([FromRoute] int productId, [FromForm] ProductEditViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
             return View();
         }
 
@@ -47,13 +57,28 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
-        [Route("/product/{productId:int}/comment")]
         [HttpPost]
-        public IActionResult Comment([FromRoute] int productId, [FromForm] object newProductCommentModel)
+        [Route("/product/{productId:int}/comment")]
+        public IActionResult Comment(int productId, ProductCommentCreateViewModel vm)
         {
-           
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("ProductDetail", "Home", new { productId });
+            }
 
-            return RedirectToAction(nameof(HomeController.ProductDetail), "Home", new { productId });
+            var comment = new ProductCommentEntity
+            {
+                ProductId = productId,
+                UserId = 1, // şimdilik sabit (login sistemi yoksa)
+                Text = vm.Text,
+                StarCount = (byte)vm.StarCount,
+                CreatedAt = DateTime.Now
+            };
+
+            _db.Add(comment);
+            _db.SaveChanges();
+
+            return RedirectToAction("ProductDetail", "Home", new { productId });
         }
 
         public IActionResult Bestseller()

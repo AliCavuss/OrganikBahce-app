@@ -1,6 +1,39 @@
-﻿ <!-- Single Page Header start -->
-<div class="container-fluid page-header py-5">
-</div>
-<!-- Single Page Header End -->
+﻿@model OrganikBahce.MVC.Models.ViewModels.ProfileEditViewModel
 
-<h1>Kullanıcı Bilgileri Görüntüleme</h1>
+<div class="container-fluid page-header py-5"></div>
+
+<div class="container mt-4">
+    <h2>Profil Bilgilerim</h2>
+
+    <form method="post" action="/profile">
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label class="form-label">Ad</label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Soyad</label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Güncelle
+        </button>
+
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

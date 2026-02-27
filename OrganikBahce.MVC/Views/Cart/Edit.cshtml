@@ -1,15 +1,41 @@
-﻿<a asp-controller="Cart" asp-action="Edit" asp-route ="cart" class="position-relative me-4 my-auto">
-	<i class="fa fa-shopping-bag fa-2x"></i>
-	<span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center
-                                     text-dark px-1"
-		  style="top: -5px; left: 15px; height: 20px; min-width: 20px;">
-		3
-	</span>Sepete Git
+﻿@model OrganikBahce.MVC.Models.ViewModels.CartEditViewModel
+
+<a asp-controller="Cart" asp-action="Edit" class="position-relative me-4 my-auto">
+    <i class="fa fa-shopping-bag fa-2x"></i>
+    <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
+          style="top: -5px; left: 15px; height: 20px; min-width: 20px;">
+        3
+    </span>
+    Sepete Git
 </a>
 
-<!-- Single Page Header start -->
-<div class="container-fluid page-header py-5">
-</div>
-<!-- Single Page Header End -->
+<div class="container-fluid page-header py-5"></div>
 
-<h1>Sepetteki Ürünleri Düzenleme</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">Sepetteki Ürünleri Düzenleme</h1>
+
+    <form method="post" action="/cart">
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label class="form-label">Ürün Id</label>
+            <input asp-for="ProductId" class="form-control" />
+            <span asp-validation-for="ProductId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Adet</label>
+            <input asp-for="Quantity" class="form-control" />
+            <span asp-validation-for="Quantity" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Sepeti Güncelle
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

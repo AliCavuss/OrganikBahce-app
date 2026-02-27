@@ -1,5 +1,6 @@
 ﻿using App.Data.Context;
 using Microsoft.AspNetCore.Mvc;
+using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
@@ -13,25 +14,20 @@ namespace OrganikBahce.MVC.Controllers
             _db = db;
         }
 
-        //[Route("/add-to-cart/{productId:int}", Name = "AddToCart")]
-        //[HttpGet]
-        //public IActionResult AddProduct([FromRoute] int productId)
-        //{
+
+        [HttpGet]
+        public IActionResult AddProduct([FromRoute] int productId)
+        {
 
 
-        //    var prevUrl = Request.Headers.Referer.FirstOrDefault();
+            var prevUrl = Request.Headers.Referer.FirstOrDefault();
 
-        //    if (prevUrl is null)
-        //    {
-        //        return RedirectToAction(nameof(Edit));
-        //    }
+            if (prevUrl is null)
+            {
+                return RedirectToAction(nameof(Edit));
+            }
 
-        //    return Redirect(prevUrl);
-        //}
-
-        public IActionResult AddProduct()
-        { 
-            return View();
+            return Redirect(prevUrl);
         }
 
 
@@ -43,10 +39,15 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+
         [Route("/cart")]
         [HttpPost]
-        public IActionResult Edit([FromForm] object editCartModel)
+        public IActionResult Edit([FromForm]CartEditViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
             return View();
         }
     }

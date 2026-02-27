@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models;
+using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
@@ -12,24 +13,28 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
-        //[Route("/about-us")]
-        //[HttpGet]
+        [Route("/about-us")]
+        [HttpGet]
         public IActionResult AboutUs()
         {
             return View();
         }
 
-        //[Route("/contact")]
-        //[HttpGet]
+        [Route("/contact")]
+        [HttpGet]
         public IActionResult Contact()
         {
             return View();
         }
 
-        //[Route("/contact")]
-        //[HttpPost]
-        public IActionResult Contact([FromForm] object newContactMessageModel)
+        [Route("/contact")]
+        [HttpPost]
+        public IActionResult Contact([FromForm] HomeContactViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
             return View();
         }
 
@@ -40,12 +45,15 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
-        //[Route("/product/{productId:int}/details")]
-        //[HttpGet]
-        public IActionResult ProductDetail()
+        [Route("/product/{productId:int}")]
+        [HttpGet]
+        public IActionResult ProductDetail(int productId)
         {
+            ViewBag.ProductId = productId;
             return View();
         }
+
+      
 
         public IActionResult Testimonial()
         {

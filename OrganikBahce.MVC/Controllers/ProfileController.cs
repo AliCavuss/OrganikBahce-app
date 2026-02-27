@@ -1,5 +1,6 @@
 ﻿using App.Data.Context;
 using Microsoft.AspNetCore.Mvc;
+using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
@@ -18,11 +19,14 @@ namespace OrganikBahce.MVC.Controllers
         {
             return View();
         }
-
         [Route("/profile")]
         [HttpPost]
-        public IActionResult Edit([FromForm] object editMyProfileModel)
+        public IActionResult Edit(ProfileEditViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
             return RedirectToAction(nameof(Details));
         }
 

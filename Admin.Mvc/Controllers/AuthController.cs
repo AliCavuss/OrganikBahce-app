@@ -22,7 +22,7 @@ namespace Admin.Mvc.Controllers
 
         [Route("/login")]
         [HttpPost]
-        public IActionResult Login([FromForm] LoginViewModel loginModel)
+        public IActionResult Login([FromForm] AuthLoginViewModel loginModel)
         {
             return View();
         }
