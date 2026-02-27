@@ -12,22 +12,22 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
-        [Route("/about-us")]
-        [HttpGet]
+        //[Route("/about-us")]
+        //[HttpGet]
         public IActionResult AboutUs()
         {
             return View();
         }
 
-        [Route("/contact")]
-        [HttpGet]
+        //[Route("/contact")]
+        //[HttpGet]
         public IActionResult Contact()
         {
             return View();
         }
 
-        [Route("/contact")]
-        [HttpPost]
+        //[Route("/contact")]
+        //[HttpPost]
         public IActionResult Contact([FromForm] object newContactMessageModel)
         {
             return View();
@@ -40,8 +40,8 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
-        [Route("/product/{productId:int}/details")]
-        [HttpGet]
+        //[Route("/product/{productId:int}/details")]
+        //[HttpGet]
         public IActionResult ProductDetail()
         {
             return View();
