@@ -1,9 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Data.Context;
+using Microsoft.AspNetCore.Mvc;
 
 namespace OrganikBahce.MVC.Controllers
 {
     public class ProfileController : Controller
     {
+        private readonly OrganikBahceDbContext _db;
+
+        public ProfileController(OrganikBahceDbContext db)
+        {
+            _db = db;
+        }
 
         [Route("/profile")]
         [HttpGet]

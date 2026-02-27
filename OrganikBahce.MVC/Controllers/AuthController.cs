@@ -1,10 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using App.Data.Context;
+using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
     public class AuthController : Controller
     {
+        private readonly OrganikBahceDbContext _db;
+
+        public AuthController(OrganikBahceDbContext db)
+        {
+            _db = db;
+        }
+
         [Route("/register")]
         [HttpGet]
         public IActionResult Register()
