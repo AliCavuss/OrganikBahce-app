@@ -1,36 +1,74 @@
-﻿@model OrganikBahce.MVC.Models.ViewModels.ProductCommentCreateViewModel
+﻿@model OrganikBahce.MVC.Models.ViewModels.ProductDetailViewModel
 
-<h4>Yorum Yap</h4>
+<div class="container py-4">
 
-<form method="post" action="/product/@ViewBag.ProductId/comment">
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <!-- ✅ Ürün Bilgileri -->
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-2">@Model.Name</h2>
 
-    <div class="mb-3">
-        <label>Yorum</label>
-        <textarea asp-for="Text"
-                  class="form-control"
-                  rows="4"></textarea>
-        <span asp-validation-for="Text" class="text-danger"></span>
+            <div class="mb-2">
+                <strong>Fiyat:</strong> @Model.Price ₺
+            </div>
+
+            <div class="mb-2">
+                <strong>Stok:</strong> @Model.StockAmount
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Details))
+            {
+                <div class="mb-3">
+                    <strong>Açıklama:</strong>
+                    <div>@Model.Details</div>
+                </div>
+            }
+        </div>
     </div>
 
-    <div class="mb-3">
-        <label>Puan</label>
-        <select asp-for="StarCount" class="form-control">
-            <option value="">Seçiniz</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-        <span asp-validation-for="StarCount" class="text-danger"></span>
+    <hr />
+
+    <!-- ✅ Yorum Yap -->
+    <div class="row">
+        <div class="col-12 col-lg-8">
+            <h4 class="mb-3">Yorum Yap</h4>
+
+            <form method="post"
+                  asp-controller="Product"
+                  asp-action="Comment"
+                  asp-route-productId="@Model.Id">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label class="form-label">Yorum</label>
+                    <textarea asp-for="NewComment.Text"
+                              class="form-control"
+                              rows="4"></textarea>
+                    <span asp-validation-for="NewComment.Text" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Puan</label>
+                    <select asp-for="NewComment.StarCount" class="form-select">
+                        <option value="">Seçiniz</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <span asp-validation-for="NewComment.StarCount" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    Yorumu Gönder
+                </button>
+            </form>
+        </div>
     </div>
-
-    <button type="submit" class="btn btn-success">
-        Yorumu Gönder
-    </button>
-
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

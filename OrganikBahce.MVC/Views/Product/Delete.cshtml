@@ -1,6 +1,50 @@
-﻿ <!-- Single Page Header start -->
+﻿@model App.Data.Entities.ProductEntity
+
+<!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
 </div>
 <!-- Single Page Header End -->
 
-<h1>Ürün Silme</h1>
+<div class="container py-5">
+
+    <h2 class="mb-4 text-danger">Ürün Silme</h2>
+
+    <!-- ✅ ViewBag Mesaj Alanı -->
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success">
+            @ViewBag.Message
+        </div>
+    }
+
+    <div class="card shadow-sm p-4 mb-4">
+        <h4>@Model.Name</h4>
+
+        <p><strong>Fiyat:</strong> @Model.Price ₺</p>
+        <p><strong>Stok:</strong> @Model.StockAmount</p>
+        <p><strong>Açıklama:</strong> @Model.Details</p>
+
+        <hr />
+
+        <p class="text-danger">
+            Bu ürünü silmek istediğinize emin misiniz?
+        </p>
+
+        <form method="post"
+              asp-action="DeleteConfirmed"
+              asp-route-productId="@Model.Id">
+
+            @Html.AntiForgeryToken()
+
+            <button type="submit" class="btn btn-danger">
+                Evet, Sil
+            </button>
+
+            <a asp-controller="Home"
+               asp-action="Listing"
+               class="btn btn-secondary">
+                Vazgeç
+            </a>
+        </form>
+    </div>
+</div>
