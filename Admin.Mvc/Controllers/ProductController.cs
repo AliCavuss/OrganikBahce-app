@@ -11,10 +11,19 @@ namespace Admin.Mvc.Controllers
         {
             _db = db;
         }
+
+        [HttpGet("/product/{id:int}/delete")]
         public IActionResult Delete(int id)
         {
-            ViewBag.Id = id;
-            return View();
+            var product = _db.Products.FirstOrDefault(x => x.Id == id);
+            if (product == null)
+                return NotFound();
+
+            _db.Products.Remove(product);
+            _db.SaveChanges();
+
+            TempData["Success"] = "Ürün silindi.";
+            return RedirectToAction("Index", "Home");
         }
     }
 }
