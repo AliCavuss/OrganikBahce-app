@@ -12,7 +12,29 @@ namespace Admin.Mvc.Controllers
             _db = db;
         }
 
-        [HttpGet("/product/{id:int}/delete")]
+
+        //---------------------------yeni eklendi.
+        [Route("/products/")]
+        [HttpGet]
+        public IActionResult List()
+        {
+            return View();
+        }
+
+        [Route("/products/filter")]
+        [HttpGet]
+        public IActionResult Filter([FromQuery] object filterOptions)
+        {
+            // will return filtered products as json
+            return Json(new { });
+        }
+
+        //-------------------------yeni eklendi.
+
+
+
+        [Route("/product/{id:int}/delete")]
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             var product = _db.Products.FirstOrDefault(x => x.Id == id);

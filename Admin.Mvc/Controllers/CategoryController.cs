@@ -15,8 +15,8 @@ namespace Admin.Mvc.Controllers
         }
 
         // ================= CREATE =================
-
-        [HttpGet("/category/create")]
+        [Route("/category/create")]
+        [HttpGet]
         public IActionResult Create()
         {
             return View(new CategoryCreateViewModel());
@@ -54,7 +54,8 @@ namespace Admin.Mvc.Controllers
 
         // ================= EDIT =================
 
-        [HttpGet("/category/{id:int}/edit")]
+        [Route("/category/{id:int}/edit")]
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             var category = _db.Categories.FirstOrDefault(x => x.Id == id);
@@ -72,7 +73,8 @@ namespace Admin.Mvc.Controllers
             return View(vm);
         }
 
-        [HttpPost("/category/{id:int}/edit")]
+        [Route("/category/{id:int}/edit")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(CategoryEditViewModel vm)
         {
@@ -103,7 +105,8 @@ namespace Admin.Mvc.Controllers
 
         // ================= DELETE =================
 
-        [HttpGet("/category/{id:int}/delete")]
+        [Route("/category/{id:int}/delete")]
+        [HttpGet]
         public IActionResult Delete(int id)
         {
             var category = _db.Categories.FirstOrDefault(x => x.Id == id);
