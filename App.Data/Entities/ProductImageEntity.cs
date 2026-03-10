@@ -8,22 +8,18 @@ using System.Threading.Tasks;
 
 namespace App.Data.Entities
 {
-    public class ProductImageEntity
+    public class ProductImageEntity : EntityBase
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
 
         [DataType(DataType.Url)]
-        public string Url { get; set; } =string.Empty;
-        public DateTime CreatedAt { get; set; }
+        public string Url { get; set; } = null!;
 
 
 
 
         #region ForeignKey
 
-        //[ForeignKey(nameof(ProductId))]
-        [JsonIgnore] 
         public ProductEntity Product { get; set; } = null!;
    
 
