@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace App.Data.Entities
 {
-    public class CategoryEntity
+    public class CategoryEntity : EntityBase
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Color { get; set; } = string.Empty;
-        public string IconCssClass { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; }
+        public string Name { get; set; } = null!;
+        public string Color { get; set; } = null!;
+        public string IconCssClass { get; set; } = null!;
     }
 }

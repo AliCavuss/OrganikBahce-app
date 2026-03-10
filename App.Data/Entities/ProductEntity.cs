@@ -7,17 +7,14 @@ using System.Threading.Tasks;
 
 namespace App.Data.Entities
 {
-    public class ProductEntity
+    public class ProductEntity : EntityBase, IHasEnabled
     {
-
-        public int Id { get; set; }
         public int SellerId { get; set; }
         public int CategoryId { get; set; }
-        public string Name { get; set; } =string.Empty;
+        public string Name { get; set; } = null!;
         public decimal Price { get; set; } 
-        public string Details { get; set; } = string.Empty;
+        public string Details { get; set; } = null!;
         public byte StockAmount { get; set; }
-        public DateTime CreatedAt { get; set; }
         public bool Enabled { get; set; }
 
 
@@ -28,11 +25,9 @@ namespace App.Data.Entities
         #region ForeignKey
 
 
-        [JsonIgnore]
         public UserEntity Seller { get; set; } = null!;
 
-        [JsonIgnore]
-        public CategoryEntity Category { get; set; } = null!;
+       public CategoryEntity Category { get; set; } = null!;
 
         #endregion
     }

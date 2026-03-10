@@ -7,25 +7,20 @@ using System.Threading.Tasks;
 
 namespace App.Data.Entities
 {
-    public class ProductCommentEntity
+    public class ProductCommentEntity : EntityBase
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
         public int UserId { get; set; }
-        public string Text { get; set; } =string.Empty;
+        public string Text { get; set; } = null!;
         public byte StarCount { get; set; }
         public bool IsConfirmed { get; set; }
-        public DateTime CreatedAt { get; set; }
 
 
 
         #region ForeignKey
 
-        //[ForeignKey(nameof(ProductId))]
-        [JsonIgnore]
+     
         public ProductEntity Product { get; set; } = null!;
-
-        [JsonIgnore]
         public UserEntity User { get; set; } = null!;
 
 

@@ -4,14 +4,12 @@ using System.Text.Json.Serialization;
 
 namespace App.Data.Entities
 {
-    public class RoleEntity
+    public class RoleEntity : EntityBase
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public DateTime CreatedAt { get; set; }
+        public string Name { get; set; } = null!;
 
-        // 1 Role -> N User
-        [JsonIgnore]
+      
+
         public ICollection<UserEntity> Users { get; set; } = new List<UserEntity>();
     }
 }
