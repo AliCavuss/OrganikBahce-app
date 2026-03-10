@@ -1,0 +1,36 @@
+﻿@model List<OrganikBahce.MVC.Models.ViewModels.ProductListItemViewModel>
+
+<div class="border rounded p-3 bg-light shadow-sm">
+    <h5 class="mb-3">Stoğu Azalan Ürünler</h5>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-success mb-0">
+            Stoğu azalan ürün yok.
+        </div>
+    }
+    else
+    {
+        <ul class="list-group">
+            @foreach (var product in Model)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>@product.Name</strong>
+                        <div class="small text-muted">@product.Price ₺</div>
+                    </div>
+
+                    <span class="badge bg-danger">
+                        Stok: @product.StockAmount
+                    </span>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+@* //sayfada çağırmak için:
+
+<div class="col-md-6">
+    @await Component.InvokeAsync("LowStockProducts")
+</div> *@

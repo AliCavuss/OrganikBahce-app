@@ -1,0 +1,14 @@
+﻿@model int
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body text-center">
+        <h6 class="text-muted">Kullanıcı Sayısı</h6>
+        <h2 class="fw-bold text-dark">@Model</h2>
+    </div>
+</div>
+
+@* //sayfada çağırmak için:
+
+<div class="col-md-3">
+    @await Component.InvokeAsync("UserCount")
+</div> *@
