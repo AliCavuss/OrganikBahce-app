@@ -1,0 +1,25 @@
+﻿@model List<App.Data.Entities.CategoryEntity>
+
+<div class="border rounded p-3 bg-light">
+    <h5 class="mb-3">Kategoriler</h5>
+
+    <ul class="list-group list-group-flush">
+        @foreach (var category in Model)
+        {
+            <li class="list-group-item d-flex align-items-center gap-2">
+                <i class="@category.IconCssClass" style="color:@category.Color;"></i>
+
+                <a class="text-decoration-none text-dark"
+                   href="/product/list?categoryId=@category.Id">
+                    @category.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+@* //çağırmak istediğimiz yere eklenecek:
+
+<div class="col-lg-3">
+    @await Component.InvokeAsync("CategoryMenu")
+</div>
+ *@

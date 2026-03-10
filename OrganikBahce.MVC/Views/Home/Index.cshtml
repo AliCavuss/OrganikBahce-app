@@ -3,6 +3,10 @@
     Layout = "_Layout"; // Layout yine burada çalışacak, ama partial sadece Index'te
 }
 
+<div class="container mt-4">
+    @await Component.InvokeAsync("FeaturedProducts")
+</div>
+
 <!-- Hero Start -->
 <div class="container-fluid py-5 mb-5 hero-header">
     <div class="container py-5">

@@ -1,4 +1,36 @@
-﻿
+﻿@model List<OrganikBahce.MVC.Models.ViewModels.ProductListItemViewModel>
+
+<div class="container mt-4">
+    <h2>Ürünler</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning">
+            Bu kategoriye ait ürün bulunamadı.
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text">Fiyat: @product.Price ₺</p>
+                            <p class="card-text">Stok: @product.StockAmount</p>
+
+                            <a href="/product/@product.Id" class="btn btn-primary">
+                                Detay
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
 
 
 

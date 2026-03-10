@@ -50,9 +50,27 @@ namespace OrganikBahce.MVC.Controllers
 
         [Route("/product/list")]
         [HttpGet]
-        public IActionResult Listing()
+        public IActionResult Listing(int? categoryId)
         {
-            return View();
+            var products = _db.Products.AsQueryable();
+
+            if (categoryId.HasValue)
+            {
+                products = products.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+            var productList = products
+                .Select(p => new ProductListItemViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    StockAmount = p.StockAmount,
+                    CategoryId = p.CategoryId
+                })
+                .ToList();
+
+            return View(productList);
         }
 
         [Route("/product/{productId:int}")]
