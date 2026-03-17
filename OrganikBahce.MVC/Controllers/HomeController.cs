@@ -2,17 +2,18 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models;
 using OrganikBahce.MVC.Models.ViewModels;
-using App.Data.Context;
+using App.Data.Entities;
+using App.Data.Repositories;
 
 namespace OrganikBahce.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly OrganikBahceDbContext _db;
+        private readonly IDataRepository<ProductEntity> _productRepository;
 
-        public HomeController(OrganikBahceDbContext db)
+        public HomeController(IDataRepository<ProductEntity> productRepository)
         {
-            _db = db;
+            _productRepository = productRepository;
         }
 
         public IActionResult Index()
@@ -37,7 +38,7 @@ namespace OrganikBahce.MVC.Controllers
         [Route("/contact")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Contact([FromForm] HomeContactViewModel vm)
+        public IActionResult Contact(HomeContactViewModel vm)
         {
             if (!ModelState.IsValid)
             {
@@ -50,13 +51,15 @@ namespace OrganikBahce.MVC.Controllers
 
         [Route("/product/list")]
         [HttpGet]
-        public IActionResult Listing(int? categoryId)
+        public async Task<IActionResult> Listing(int? categoryId)
         {
-            var products = _db.Products.AsQueryable();
+            var products = await _productRepository.GetAllAsync();
 
             if (categoryId.HasValue)
             {
-                products = products.Where(p => p.CategoryId == categoryId.Value);
+                products = products
+                    .Where(p => p.CategoryId == categoryId.Value)
+                    .ToList();
             }
 
             var productList = products
@@ -75,9 +78,11 @@ namespace OrganikBahce.MVC.Controllers
 
         [Route("/product/{productId:int}")]
         [HttpGet]
-        public IActionResult ProductDetail(int productId)
+        public async Task<IActionResult> ProductDetail(int productId)
         {
-            var vm = _db.Products
+            var products = await _productRepository.GetAllAsync();
+
+            var vm = products
                 .Where(p => p.Id == productId)
                 .Select(p => new ProductDetailViewModel
                 {
@@ -108,3 +113,4 @@ namespace OrganikBahce.MVC.Controllers
         }
     }
 }
+
