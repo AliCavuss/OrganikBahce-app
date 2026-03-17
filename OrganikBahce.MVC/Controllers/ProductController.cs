@@ -1,5 +1,5 @@
-﻿using App.Data.Context;
-using App.Data.Entities;
+﻿using App.Data.Entities;
+using App.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
 
@@ -7,11 +7,15 @@ namespace OrganikBahce.MVC.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly OrganikBahceDbContext _db;
+        private readonly IDataRepository<ProductEntity> _productRepository;
+        private readonly IDataRepository<ProductCommentEntity> _commentRepository;
 
-        public ProductController(OrganikBahceDbContext db)
+        public ProductController(
+            IDataRepository<ProductEntity> productRepository,
+            IDataRepository<ProductCommentEntity> commentRepository)
         {
-            _db = db;
+            _productRepository = productRepository;
+            _commentRepository = commentRepository;
         }
 
         // ================= CREATE =================
@@ -26,7 +30,7 @@ namespace OrganikBahce.MVC.Controllers
         [Route("/product")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([FromForm] ProductCreateViewModel vm)
+        public async Task<IActionResult> Create(ProductCreateViewModel vm)
         {
             if (!ModelState.IsValid)
                 return View(vm);
@@ -43,13 +47,10 @@ namespace OrganikBahce.MVC.Controllers
                 Enabled = true
             };
 
-            _db.Products.Add(entity);
-            _db.SaveChanges();
+            await _productRepository.AddAsync(entity);
 
-            
             ViewBag.Message = "Ürün başarıyla eklendi.";
 
-           
             ModelState.Clear();
             return View(new ProductCreateViewModel());
         }
@@ -58,9 +59,11 @@ namespace OrganikBahce.MVC.Controllers
 
         [Route("/product/{productId:int}/edit")]
         [HttpGet]
-        public IActionResult Edit([FromRoute] int productId)
+        public async Task<IActionResult> Edit(int productId)
         {
-            var entity = _db.Products.Find(productId);
+            var products = await _productRepository.GetAllAsync();
+            var entity = products.FirstOrDefault(x => x.Id == productId);
+
             if (entity == null)
                 return NotFound();
 
@@ -81,12 +84,14 @@ namespace OrganikBahce.MVC.Controllers
         [Route("/product/{productId:int}/edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int productId, [FromForm] ProductEditViewModel vm)
+        public async Task<IActionResult> Edit(int productId, ProductEditViewModel vm)
         {
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var entity = _db.Products.Find(productId);
+            var products = await _productRepository.GetAllAsync();
+            var entity = products.FirstOrDefault(x => x.Id == productId);
+
             if (entity == null)
                 return NotFound();
 
@@ -97,9 +102,9 @@ namespace OrganikBahce.MVC.Controllers
             entity.Details = vm.Details ?? string.Empty;
             entity.StockAmount = vm.StockAmount;
 
-            _db.SaveChanges();
+            _productRepository.Update(entity);
+            await _productRepository.SaveAsync();
 
-           
             ViewBag.Message = "Ürün başarıyla güncellendi.";
 
             return View(vm);
@@ -110,9 +115,10 @@ namespace OrganikBahce.MVC.Controllers
         [Route("/product/{productId:int}/delete")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed([FromRoute] int productId)
+        public async Task<IActionResult> DeleteConfirmed(int productId)
         {
-            var entity = _db.Products.Find(productId);
+            var products = await _productRepository.GetAllAsync();
+            var entity = products.FirstOrDefault(x => x.Id == productId);
 
             if (entity == null)
             {
@@ -120,12 +126,11 @@ namespace OrganikBahce.MVC.Controllers
                 return View("Delete");
             }
 
-            _db.Products.Remove(entity);
-            _db.SaveChanges();
+            _productRepository.Delete(entity);
+            await _productRepository.SaveAsync();
 
             ViewBag.Message = "Ürün başarıyla silindi.";
 
-            // Delete view model bekliyorsa göndermek daha doğru:
             return View("Delete", entity);
         }
 
@@ -134,13 +139,10 @@ namespace OrganikBahce.MVC.Controllers
         [HttpPost]
         [Route("/product/{productId:int}/comment")]
         [ValidateAntiForgeryToken]
-        public IActionResult Comment(int productId, [FromForm] ProductDetailViewModel vm)
+        public async Task<IActionResult> Comment(int productId, ProductDetailViewModel vm)
         {
-           
             if (!TryValidateModel(vm.NewComment, prefix: "NewComment"))
             {
-                ViewBag.Message = "Yorum alanlarını kontrol et.";
-                
                 return RedirectToAction("ProductDetail", "Home", new { productId });
             }
 
@@ -150,13 +152,12 @@ namespace OrganikBahce.MVC.Controllers
                 UserId = 1,
                 Text = vm.NewComment.Text,
                 StarCount = (byte)vm.NewComment.StarCount,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                IsConfirmed = false
             };
 
-            _db.Add(comment);
-            _db.SaveChanges();
+            await _commentRepository.AddAsync(comment);
 
-            
             return RedirectToAction("ProductDetail", "Home", new { productId });
         }
 

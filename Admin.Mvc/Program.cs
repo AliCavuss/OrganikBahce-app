@@ -1,4 +1,5 @@
 using App.Data.Context;
+using App.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<OrganikBahceDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
+builder.Services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
 
 var app = builder.Build();
 
