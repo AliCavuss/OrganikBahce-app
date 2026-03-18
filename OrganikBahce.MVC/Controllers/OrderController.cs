@@ -1,10 +1,12 @@
 ﻿using App.Data.Entities;
 using App.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
+    [Authorize(Roles = "Buyer,Seller")]
     public class OrderController : Controller
     {
         private readonly IDataRepository<OrderEntity> _orderRepository;
@@ -32,7 +34,7 @@ namespace OrganikBahce.MVC.Controllers
 
             var entity = new OrderEntity
             {
-                UserId = 1, // şimdilik sabit
+                UserId = 1,
                 OrderCode = "AB",
                 Address = vm.Address,
                 CreatedAt = DateTime.Now
@@ -56,50 +58,3 @@ namespace OrganikBahce.MVC.Controllers
         }
     }
 }
-
-
-
-
-
-
-
-
-//namespace OrganikBahce.MVC.Controllers
-//{
-//    public class OrderController : Controller
-//    {
-//        private readonly OrganikBahceDbContext _db;
-
-//        public OrderController(OrganikBahceDbContext db)
-//        {
-//            _db = db;
-//        }
-
-//        [Route("/order")]
-//        [HttpGet]
-//        public IActionResult Create()
-//        {
-//            return View();
-//        }
-
-
-//        [Route("/order")]
-//        [HttpPost]
-//        public IActionResult Create(OrderCreateViewModel vm)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return View(vm);
-//            }
-//            var orderId = 1; // şimdilik sabit
-//            return RedirectToAction(nameof(Details), new { orderId = orderId });
-//        }
-
-//        [Route("/order/{orderId:int}/details")]
-//        [HttpGet]
-//        public IActionResult Details([FromRoute] int orderId)
-//        {
-//            return View();
-//        }
-//    }
-//}

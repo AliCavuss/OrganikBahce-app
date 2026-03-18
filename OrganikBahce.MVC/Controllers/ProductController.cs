@@ -1,5 +1,6 @@
 ﻿using App.Data.Entities;
 using App.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
 
@@ -20,6 +21,7 @@ namespace OrganikBahce.MVC.Controllers
 
         // ================= CREATE =================
 
+        [Authorize(Roles = "Seller")]
         [Route("/product")]
         [HttpGet]
         public IActionResult Create()
@@ -27,6 +29,7 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Seller")]
         [Route("/product")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -48,6 +51,7 @@ namespace OrganikBahce.MVC.Controllers
             };
 
             await _productRepository.AddAsync(entity);
+            await _productRepository.SaveAsync();
 
             ViewBag.Message = "Ürün başarıyla eklendi.";
 
@@ -57,6 +61,7 @@ namespace OrganikBahce.MVC.Controllers
 
         // ================= EDIT =================
 
+        [Authorize(Roles = "Seller")]
         [Route("/product/{productId:int}/edit")]
         [HttpGet]
         public async Task<IActionResult> Edit(int productId)
@@ -81,6 +86,7 @@ namespace OrganikBahce.MVC.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Seller")]
         [Route("/product/{productId:int}/edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -112,6 +118,7 @@ namespace OrganikBahce.MVC.Controllers
 
         // ================= DELETE =================
 
+        [Authorize(Roles = "Seller")]
         [Route("/product/{productId:int}/delete")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -136,6 +143,7 @@ namespace OrganikBahce.MVC.Controllers
 
         // ================= COMMENT =================
 
+        [Authorize(Roles = "Buyer,Seller")]
         [HttpPost]
         [Route("/product/{productId:int}/comment")]
         [ValidateAntiForgeryToken]
@@ -157,10 +165,12 @@ namespace OrganikBahce.MVC.Controllers
             };
 
             await _commentRepository.AddAsync(comment);
+            await _commentRepository.SaveAsync();
 
             return RedirectToAction("ProductDetail", "Home", new { productId });
         }
 
+        [AllowAnonymous]
         public IActionResult Bestseller()
         {
             return View();

@@ -1,10 +1,12 @@
 using Admin.Mvc.Models;
 using App.Data.Entities;
 using App.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Mvc.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class HomeController : Controller
     {
         private readonly IDataRepository<CategoryEntity> _categoryRepository;
@@ -30,20 +32,3 @@ namespace Admin.Mvc.Controllers
         }
     }
 }
-
-        //private readonly OrganikBahceDbContext _db;
-
-        //public HomeController(OrganikBahceDbContext db)
-        //{
-        //    _db = db;
-        //}
-
-        //public IActionResult Index()
-        //{
-            
-        //    ViewBag.CategoryCount = _db.Categories.Count();
-        //    ViewBag.ProductCount = _db.Products.Count();
-
-        //    return View();
-        //}
-  

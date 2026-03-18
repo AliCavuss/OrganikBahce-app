@@ -1,10 +1,12 @@
 ﻿using App.Data.Entities;
 using App.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
+    [Authorize(Roles = "Buyer,Seller")]
     public class CartController : Controller
     {
         private readonly IDataRepository<CartItemEntity> _cartRepository;
@@ -21,7 +23,7 @@ namespace OrganikBahce.MVC.Controllers
             var cartItem = new CartItemEntity
             {
                 ProductId = productId,
-                UserId = 1, 
+                UserId = 1,
                 Quantity = 1,
                 CreatedAt = DateTime.Now
             };
@@ -59,61 +61,3 @@ namespace OrganikBahce.MVC.Controllers
         }
     }
 }
-
-
-
-
-
-
-
-
-//namespace OrganikBahce.MVC.Controllers
-//{
-//    public class CartController : Controller
-//    {
-
-//        private readonly OrganikBahceDbContext _db;
-
-//        public CartController(OrganikBahceDbContext db)
-//        {
-//            _db = db;
-//        }
-
-
-//        [HttpGet]
-//        public IActionResult AddProduct([FromRoute] int productId)
-//        {
-
-
-//            var prevUrl = Request.Headers.Referer.FirstOrDefault();
-
-//            if (prevUrl is null)
-//            {
-//                return RedirectToAction(nameof(Edit));
-//            }
-
-//            return Redirect(prevUrl);
-//        }
-
-
-
-//        [Route("/cart")]
-//        [HttpGet]
-//        public IActionResult Edit()
-//        {
-//            return View();
-//        }
-
-
-//        [Route("/cart")]
-//        [HttpPost]
-//        public IActionResult Edit([FromForm]CartEditViewModel vm)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return View(vm);
-//            }
-//            return View();
-//        }
-//    }
-//}

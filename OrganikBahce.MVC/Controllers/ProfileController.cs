@@ -1,10 +1,12 @@
 ﻿using App.Data.Entities;
 using App.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
 
 namespace OrganikBahce.MVC.Controllers
 {
+    [Authorize]
     public class ProfileController : Controller
     {
         private readonly IDataRepository<UserEntity> _userRepository;
@@ -25,7 +27,7 @@ namespace OrganikBahce.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Details()
         {
-            var user = await _userRepository.GetByIdAsync(1); // şimdilik sabit kullanıcı
+            var user = await _userRepository.GetByIdAsync(1);
             if (user == null)
                 return NotFound();
 
@@ -48,7 +50,7 @@ namespace OrganikBahce.MVC.Controllers
                 return View("Details", vm);
             }
 
-            var user = await _userRepository.GetByIdAsync(1); // şimdilik sabit kullanıcı
+            var user = await _userRepository.GetByIdAsync(1);
             if (user == null)
                 return NotFound();
 
@@ -62,71 +64,26 @@ namespace OrganikBahce.MVC.Controllers
             return RedirectToAction(nameof(Details));
         }
 
+        [Authorize(Roles = "Buyer,Seller")]
         [Route("/my-orders")]
         [HttpGet]
         public async Task<IActionResult> MyOrders()
         {
             var orders = await _orderRepository.GetAllAsync();
-            var myOrders = orders.Where(x => x.UserId == 1).ToList(); // şimdilik sabit kullanıcı
+            var myOrders = orders.Where(x => x.UserId == 1).ToList();
 
             return View(myOrders);
         }
 
+        [Authorize(Roles = "Seller")]
         [Route("/my-products")]
         [HttpGet]
         public async Task<IActionResult> MyProducts()
         {
             var products = await _productRepository.GetAllAsync();
-            var myProducts = products.Where(x => x.SellerId == 1).ToList(); // şimdilik sabit kullanıcı
+            var myProducts = products.Where(x => x.SellerId == 1).ToList();
 
             return View(myProducts);
         }
     }
 }
-
-
-
-
-//namespace OrganikBahce.MVC.Controllers
-//{
-//    public class ProfileController : Controller
-//    {
-//        private readonly OrganikBahceDbContext _db;
-
-//        public ProfileController(OrganikBahceDbContext db)
-//        {
-//            _db = db;
-//        }
-
-//        [Route("/profile")]
-//        [HttpGet]
-//        public IActionResult Details()
-//        {
-//            return View();
-//        }
-//        [Route("/profile")]
-//        [HttpPost]
-//        public IActionResult Edit(ProfileEditViewModel vm)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return View(vm);
-//            }
-//            return RedirectToAction(nameof(Details));
-//        }
-
-//        [Route("/my-orders")]
-//        [HttpGet]
-//        public IActionResult MyOrders()
-//        {
-//            return View();
-//        }
-
-//        [Route("/my-products")]
-//        [HttpGet]
-//        public IActionResult MyProducts()
-//        {
-//            return View();
-//        }
-//    }
-//}
