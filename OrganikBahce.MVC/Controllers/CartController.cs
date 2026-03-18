@@ -1,4 +1,5 @@
-﻿using App.Data.Entities;
+﻿using System.Security.Claims;
+using App.Data.Entities;
 using App.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,10 +21,19 @@ namespace OrganikBahce.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> AddProduct(int productId)
         {
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdClaim))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var userId = int.Parse(userIdClaim);
+
             var cartItem = new CartItemEntity
             {
                 ProductId = productId,
-                UserId = 1,
+                UserId = userId,
                 Quantity = 1,
                 CreatedAt = DateTime.Now
             };
@@ -33,7 +43,7 @@ namespace OrganikBahce.MVC.Controllers
 
             var prevUrl = Request.Headers.Referer.FirstOrDefault();
 
-            if (prevUrl is null)
+            if (string.IsNullOrEmpty(prevUrl))
             {
                 return RedirectToAction(nameof(Edit));
             }
@@ -57,7 +67,7 @@ namespace OrganikBahce.MVC.Controllers
                 return View(vm);
             }
 
-            return View();
+            return View(vm);
         }
     }
 }

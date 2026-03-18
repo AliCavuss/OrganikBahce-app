@@ -51,7 +51,7 @@ namespace OrganikBahce.MVC.Controllers
                 FirstName = vm.FirstName,
                 LastName = vm.LastName,
                 Password = vm.Password,
-                RoleId = 1,
+                RoleId = 3,
                 CreatedAt = DateTime.Now,
                 Enabled = true
             };
@@ -95,9 +95,9 @@ namespace OrganikBahce.MVC.Controllers
 
             string roleName = user.RoleId switch
             {
-                1 => "Buyer",
+                1 => "Admin",
                 2 => "Seller",
-                3 => "Admin",
+                3 => "Buyer",
                 _ => ""
             };
 

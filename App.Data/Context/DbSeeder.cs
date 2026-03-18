@@ -10,15 +10,15 @@ namespace App.Data.Contexts
             Random rnd = Random.Shared;
 
             modelBuilder.Entity<RoleEntity>().HasData(
-               new RoleEntity() { Id = 1, Name = "admin", CreatedAt = DateTime.UtcNow },
-               new RoleEntity() { Id = 2, Name = "seller", CreatedAt = DateTime.UtcNow },
-               new RoleEntity() { Id = 3, Name = "buyer", CreatedAt = DateTime.UtcNow }
+               new RoleEntity() { Id = 1, Name = "Admin", CreatedAt = DateTime.UtcNow },
+               new RoleEntity() { Id = 2, Name = "Seller", CreatedAt = DateTime.UtcNow },
+               new RoleEntity() { Id = 3, Name = "Buyer", CreatedAt = DateTime.UtcNow }
             );
 
             modelBuilder.Entity<UserEntity>().HasData(
-                new UserEntity() { Id = 1, FirstName = "admin", LastName = "admin", Email = "admin@organikbahce.com", Enabled = true, RoleId = 1, Password = "1234", CreatedAt = DateTime.UtcNow },
-                new UserEntity() { Id = 2, FirstName = "seller", LastName = "seller", Email = "seller@organikbahce.com", Enabled = true, RoleId = 2, Password = "1234", CreatedAt = DateTime.UtcNow },
-                new UserEntity() { Id = 3, FirstName = "buyer", LastName = "buyer", Email = "buyer@organikbahce.com", Enabled = true, RoleId = 3, Password = "1234", CreatedAt = DateTime.UtcNow }
+                new UserEntity() { Id = 1, FirstName = "Admin", LastName = "Admin", Email = "admin@organikbahce.com", Enabled = true, RoleId = 1, Password = "1234", CreatedAt = DateTime.UtcNow },
+                new UserEntity() { Id = 2, FirstName = "Seller", LastName = "Seller", Email = "seller@organikbahce.com", Enabled = true, RoleId = 2, Password = "1234", CreatedAt = DateTime.UtcNow },
+                new UserEntity() { Id = 3, FirstName = "Buyer", LastName = "Buyer", Email = "buyer@organikbahce.com", Enabled = true, RoleId = 3, Password = "1234", CreatedAt = DateTime.UtcNow }
             );
 
             modelBuilder.Entity<CategoryEntity>().HasData(
