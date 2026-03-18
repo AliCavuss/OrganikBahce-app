@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models;
 using OrganikBahce.MVC.Models.ViewModels;
@@ -16,11 +17,13 @@ namespace OrganikBahce.MVC.Controllers
             _productRepository = productRepository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/about-us")]
         [HttpGet]
         public IActionResult AboutUs()
@@ -28,6 +31,7 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/contact")]
         [HttpGet]
         public IActionResult Contact()
@@ -35,6 +39,7 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/contact")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -49,6 +54,7 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Buyer,Seller")]
         [Route("/product/list")]
         [HttpGet]
         public async Task<IActionResult> Listing(int? categoryId)
@@ -76,6 +82,7 @@ namespace OrganikBahce.MVC.Controllers
             return View(productList);
         }
 
+        [Authorize(Roles = "Buyer,Seller")]
         [Route("/product/{productId:int}")]
         [HttpGet]
         public async Task<IActionResult> ProductDetail(int productId)
@@ -102,15 +109,16 @@ namespace OrganikBahce.MVC.Controllers
             return View(vm);
         }
 
+        [AllowAnonymous]
         public IActionResult Testimonial()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public IActionResult Statistics()
         {
             return View();
         }
     }
 }
-

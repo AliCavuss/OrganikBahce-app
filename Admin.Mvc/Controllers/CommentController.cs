@@ -1,25 +1,19 @@
-﻿using App.Data.Context;
-using Microsoft.AspNetCore.Mvc;
-using App.Data.Entities;
+﻿using App.Data.Entities;
 using App.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Mvc.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class CommentController : Controller
     {
-        //private readonly OrganikBahceDbContext _db;
-
-        //public CommentController(OrganikBahceDbContext db)
-        //{
-        //    _db = db;
-        //}
         private readonly IDataRepository<ProductCommentEntity> _commentRepository;
-       
+
         public CommentController(IDataRepository<ProductCommentEntity> commentRepository)
         {
             _commentRepository = commentRepository;
         }
-
 
         [Route("/comment")]
         [HttpGet]
@@ -27,14 +21,6 @@ namespace Admin.Mvc.Controllers
         {
             return View();
         }
-
-        //[Route("/comment/{commentId:int}/approve")]
-        //[HttpGet]
-        //public IActionResult Approve(int id)
-        //{
-        //    ViewBag.Id = id;
-        //    return View();
-        //}
 
         [Route("/comment/{commentId:int}/approve")]
         [HttpGet]

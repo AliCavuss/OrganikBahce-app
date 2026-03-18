@@ -1,5 +1,9 @@
-﻿using App.Data.Entities;
+﻿using System.Security.Claims;
+using App.Data.Entities;
 using App.Data.Repositories;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
 
@@ -16,6 +20,7 @@ namespace OrganikBahce.MVC.Controllers
 
         // ================= REGISTER =================
 
+        [AllowAnonymous]
         [Route("/register")]
         [HttpGet]
         public IActionResult Register()
@@ -23,6 +28,7 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/register")]
         [HttpPost]
         public async Task<IActionResult> Register(AuthRegisterViewModel vm)
@@ -45,18 +51,20 @@ namespace OrganikBahce.MVC.Controllers
                 FirstName = vm.FirstName,
                 LastName = vm.LastName,
                 Password = vm.Password,
-                RoleId = 1, 
+                RoleId = 1,
                 CreatedAt = DateTime.Now,
                 Enabled = true
             };
 
             await _userRepository.AddAsync(user);
+            await _userRepository.SaveAsync();
 
             return RedirectToAction(nameof(Login));
         }
 
         // ================= LOGIN =================
 
+        [AllowAnonymous]
         [Route("/login")]
         [HttpGet]
         public IActionResult Login()
@@ -64,6 +72,7 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/login")]
         [HttpPost]
         public async Task<IActionResult> Login(AuthLoginViewModel vm)
@@ -75,7 +84,8 @@ namespace OrganikBahce.MVC.Controllers
 
             var user = users.FirstOrDefault(x =>
                 x.Email == vm.Email &&
-                x.Password == vm.Password);
+                x.Password == vm.Password &&
+                x.Enabled);
 
             if (user == null)
             {
@@ -83,11 +93,44 @@ namespace OrganikBahce.MVC.Controllers
                 return View(vm);
             }
 
+            string roleName = user.RoleId switch
+            {
+                1 => "Buyer",
+                2 => "Seller",
+                3 => "Admin",
+                _ => ""
+            };
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, roleName)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
+
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                claimsPrincipal,
+                new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTime.UtcNow.AddHours(2)
+                });
+
             return RedirectToAction("Index", "Home");
         }
 
         // ================= FORGOT PASSWORD =================
 
+        [AllowAnonymous]
         [Route("/forgot-password")]
         [HttpGet]
         public IActionResult ForgotPassword()
@@ -95,6 +138,7 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/forgot-password")]
         [HttpPost]
         public IActionResult ForgotPassword(AuthForgotPasswordViewModel vm)
@@ -107,6 +151,7 @@ namespace OrganikBahce.MVC.Controllers
 
         // ================= RENEW PASSWORD =================
 
+        [AllowAnonymous]
         [Route("/renew-password/{verificationCode}")]
         [HttpGet]
         public IActionResult RenewPassword(string verificationCode)
@@ -115,6 +160,7 @@ namespace OrganikBahce.MVC.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [Route("/renew-password")]
         [HttpPost]
         public IActionResult RenewPassword(AuthRenewPasswordViewModel vm)
@@ -127,10 +173,12 @@ namespace OrganikBahce.MVC.Controllers
 
         // ================= LOGOUT =================
 
+        [Authorize]
         [Route("/logout")]
         [HttpGet]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(Login));
         }
     }

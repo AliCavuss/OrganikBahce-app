@@ -1,27 +1,19 @@
-﻿using Admin.Mvc.Controllers;
-using App.Data.Context;
-using App.Data.Entities;
+﻿using App.Data.Entities;
 using App.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace Admin.Mvc.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
-    //    private readonly OrganikBahceDbContext _db;
+        private readonly IDataRepository<UserEntity> _userRepository;
 
-    //    public UserController   (OrganikBahceDbContext db)
-    //    {
-    //        _db = db;
-    //    }
-    private readonly IDataRepository<UserEntity> _userRepository;
         public UserController(IDataRepository<UserEntity> userRepository)
         {
             _userRepository = userRepository;
         }
-
-
 
         [Route("/users")]
         [HttpGet]
@@ -29,14 +21,6 @@ namespace Admin.Mvc.Controllers
         {
             return View();
         }
-
-        //[Route("/users/{userId:int}/approve")]
-        //[HttpGet]
-        //public IActionResult Approve(int id)
-        //{
-        //    TempData["Success"] = $"Kullanıcı #{id} için satıcı onayı verildi .";
-        //    return RedirectToAction("List", "User");
-        //}
 
         [Route("/users/{userId:int}/approve")]
         [HttpGet]
@@ -46,7 +30,7 @@ namespace Admin.Mvc.Controllers
             if (user == null)
                 return NotFound();
 
-            user.RoleId = 1; 
+            user.RoleId = 1;
             user.Enabled = true;
 
             _userRepository.Update(user);
@@ -55,6 +39,5 @@ namespace Admin.Mvc.Controllers
             TempData["Success"] = $"Kullanıcı #{userId} için satıcı onayı verildi.";
             return RedirectToAction("List", "User");
         }
-
     }
 }
