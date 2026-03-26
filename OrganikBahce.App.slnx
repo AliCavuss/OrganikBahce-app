@@ -1,5 +1,6 @@
 <Solution>
   <Project Path="Admin.Mvc/Admin.Mvc.csproj" />
+  <Project Path="App.Api.Data/App.Api.Data.csproj" Id="09f4c81f-223e-48c9-8639-226681cdba32" />
   <Project Path="App.Data/App.Data.csproj" Id="b8f65eb3-1252-490d-9c0a-16ac2b728e9a" />
   <Project Path="OrganikBahce.MVC/OrganikBahce.MVC.csproj" />
 </Solution>
