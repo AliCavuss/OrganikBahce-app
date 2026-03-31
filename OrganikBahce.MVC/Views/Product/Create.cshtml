@@ -2,7 +2,7 @@
 
 <h1>Ürün Oluşturma</h1>
 
-<form method="post" action="/product">
+<form method="post" action="/product" enctype="multipart/form-data">
 
     <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -31,15 +31,15 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="SellerId"></label>
-        <input asp-for="SellerId" type="number" class="form-control" />
-        <span asp-validation-for="SellerId" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
         <label asp-for="StockAmount"></label>
         <input asp-for="StockAmount" type="number" class="form-control" />
         <span asp-validation-for="StockAmount" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImageFile">Ürün Görseli</label>
+        <input asp-for="ImageFile" type="file" class="form-control" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary">

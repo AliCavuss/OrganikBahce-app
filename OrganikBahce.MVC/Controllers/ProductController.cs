@@ -3,6 +3,7 @@ using App.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
+using System.Text.Json;
 
 namespace OrganikBahce.MVC.Controllers
 {
@@ -38,16 +39,37 @@ namespace OrganikBahce.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
+            if (vm.ImageFile != null)
+            {
+                var client = new HttpClient();
+
+                using var formData = new MultipartFormDataContent();
+                formData.Add(
+                    new StreamContent(vm.ImageFile.OpenReadStream()),
+                    "file",
+                    vm.ImageFile.FileName
+                );
+
+                var response = await client.PostAsync("https://localhost:7196/api/File/upload", formData);
+
+                var result = await response.Content.ReadAsStringAsync();
+
+                var json = JsonDocument.Parse(result);
+                var fileName = json.RootElement.GetProperty("fileName").GetString();
+
+                vm.ImageUrl = fileName;
+            }
+
             var entity = new ProductEntity
             {
-                SellerId = vm.SellerId,
+                SellerId = 1,
                 CategoryId = vm.CategoryId,
                 Name = vm.Name,
                 Price = vm.Price,
                 Details = vm.Details ?? string.Empty,
                 StockAmount = vm.StockAmount,
-                CreatedAt = DateTime.Now,
-                Enabled = true
+                Enabled = true,
+                ImageUrl = vm.ImageUrl
             };
 
             await _productRepository.AddAsync(entity);

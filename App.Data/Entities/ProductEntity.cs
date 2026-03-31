@@ -18,7 +18,7 @@ namespace App.Data.Entities
         public bool Enabled { get; set; }
 
 
-
+        public string? ImageUrl { get; set; }
 
 
 

@@ -6,6 +6,11 @@ using OrganikBahce.MVC.Models.ViewModels;
 using App.Data.Entities;
 using App.Data.Repositories;
 
+using System.Net.Http.Json;
+
+using System.Security.Claims;
+
+
 namespace OrganikBahce.MVC.Controllers
 {
     public class HomeController : Controller
@@ -59,8 +64,15 @@ namespace OrganikBahce.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Listing(int? categoryId)
         {
-            var products = await _productRepository.GetAllAsync();
+            var client = new HttpClient();
 
+            var products = await client.GetFromJsonAsync<List<ProductListItemViewModel>>(
+                "https://localhost:7050/api/Product");
+
+            // null gelirse boþ liste yap
+            products ??= new List<ProductListItemViewModel>();
+
+            // category filtreleme (eski koddan)
             if (categoryId.HasValue)
             {
                 products = products
@@ -68,18 +80,7 @@ namespace OrganikBahce.MVC.Controllers
                     .ToList();
             }
 
-            var productList = products
-                .Select(p => new ProductListItemViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price,
-                    StockAmount = p.StockAmount,
-                    CategoryId = p.CategoryId
-                })
-                .ToList();
-
-            return View(productList);
+            return View(products);
         }
 
         [Authorize(Roles = "Buyer,Seller")]
@@ -119,6 +120,30 @@ namespace OrganikBahce.MVC.Controllers
         public IActionResult Statistics()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        [Route("/debug-auth")]
+        [HttpGet]
+        public IActionResult DebugAuth()
+        {
+            var token = Request.Cookies["jwt_token"];
+
+            var isAuthenticated = User.Identity?.IsAuthenticated ?? false;
+            var name = User.Identity?.Name ?? "yok";
+            var role = User.FindFirstValue(ClaimTypes.Role) ?? "yok";
+
+            var authHeader = Request.Headers["Authorization"].ToString();
+            var jwtError = Response.Headers["jwt-error"].ToString();
+
+            return Content(
+                $"Cookie var mý: {(string.IsNullOrEmpty(token) ? "YOK" : "VAR")}\n" +
+                $"Authenticated: {isAuthenticated}\n" +
+                $"Name: {name}\n" +
+                $"Role: {role}\n" +
+                $"Authorization Header: {(string.IsNullOrEmpty(authHeader) ? "YOK" : authHeader)}\n" +
+                $"JWT Error: {(string.IsNullOrEmpty(jwtError) ? "YOK" : jwtError)}"
+            );
         }
     }
 }

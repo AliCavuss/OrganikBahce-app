@@ -1,5 +1,10 @@
 <Solution>
-  <Project Path="Admin.Mvc/Admin.Mvc.csproj" />
+  <Project Path="Admin.Mvc/Admin.Mvc.csproj">
+    <BuildDependency Project="App.Api.Data/App.Api.Data.csproj" />
+    <BuildDependency Project="OrganikBahce.MVC/OrganikBahce.MVC.csproj" />
+  </Project>
+  <Project Path="App.Api.Data/App.Api.Data.csproj" Id="8a646362-67f5-444d-a62f-31c321341db8" />
+  <Project Path="App.Api.File/App.Api.File.csproj" Id="7aabf85f-82cb-41ed-a5e7-e96c2562bb17" />
   <Project Path="App.Data/App.Data.csproj" Id="b8f65eb3-1252-490d-9c0a-16ac2b728e9a" />
   <Project Path="OrganikBahce.MVC/OrganikBahce.MVC.csproj" />
 </Solution>
