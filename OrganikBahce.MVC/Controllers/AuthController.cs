@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
+﻿using System.Net;
+using System.Net.Http.Json;
+
 using App.Data.Entities;
 using App.Data.Repositories;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrganikBahce.MVC.Models.ViewModels;
@@ -11,12 +11,7 @@ namespace OrganikBahce.MVC.Controllers
 {
     public class AuthController : Controller
     {
-        private readonly IDataRepository<UserEntity> _userRepository;
-
-        public AuthController(IDataRepository<UserEntity> userRepository)
-        {
-            _userRepository = userRepository;
-        }
+      
 
         // ================= REGISTER =================
 
@@ -27,42 +22,6 @@ namespace OrganikBahce.MVC.Controllers
         {
             return View();
         }
-
-        [AllowAnonymous]
-        [Route("/register")]
-        [HttpPost]
-        public async Task<IActionResult> Register(AuthRegisterViewModel vm)
-        {
-            if (!ModelState.IsValid)
-                return View(vm);
-
-            var users = await _userRepository.GetAllAsync();
-
-            var exists = users.Any(x => x.Email == vm.Email);
-            if (exists)
-            {
-                ModelState.AddModelError(nameof(vm.Email), "Bu email zaten kayıtlı.");
-                return View(vm);
-            }
-
-            var user = new UserEntity
-            {
-                Email = vm.Email,
-                FirstName = vm.FirstName,
-                LastName = vm.LastName,
-                Password = vm.Password,
-                RoleId = 3,
-                CreatedAt = DateTime.Now,
-                Enabled = true
-            };
-
-            await _userRepository.AddAsync(user);
-            await _userRepository.SaveAsync();
-
-            return RedirectToAction(nameof(Login));
-        }
-
-        // ================= LOGIN =================
 
         [AllowAnonymous]
         [Route("/login")]
@@ -80,50 +39,46 @@ namespace OrganikBahce.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var users = await _userRepository.GetAllAsync();
+            var client = new HttpClient();
 
-            var user = users.FirstOrDefault(x =>
-                x.Email == vm.Email &&
-                x.Password == vm.Password &&
-                x.Enabled);
+            var response = await client.PostAsJsonAsync(
+                "https://localhost:7050/api/Auth/login",
+                new
+                {
+                    email = vm.Email,
+                    password = vm.Password
+                });
 
-            if (user == null)
+            if (response.StatusCode == HttpStatusCode.NotFound)
             {
                 ModelState.AddModelError(string.Empty, "Email veya şifre hatalı.");
                 return View(vm);
             }
 
-            string roleName = user.RoleId switch
+            if (!response.IsSuccessStatusCode)
             {
-                1 => "Admin",
-                2 => "Seller",
-                3 => "Buyer",
-                _ => ""
-            };
+                ModelState.AddModelError(string.Empty, "Giriş sırasında bir hata oluştu.");
+                return View(vm);
+            }
 
-            var claims = new List<Claim>
+            var result = await response.Content.ReadFromJsonAsync<LoginApiResponse>();
+
+
+
+            if (result == null || string.IsNullOrWhiteSpace(result.Token))
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, roleName)
-            };
+                ModelState.AddModelError(string.Empty, "API'den token gelmedi.");
+                return View(vm);
+            }
 
-            var claimsIdentity = new ClaimsIdentity(
-                claims,
-                CookieAuthenticationDefaults.AuthenticationScheme
-            );
-
-            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                claimsPrincipal,
-                new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    ExpiresUtc = DateTime.UtcNow.AddHours(2)
-                });
+            Response.Cookies.Append("jwt_token", result.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTimeOffset.UtcNow.AddHours(2),
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            });
 
             return RedirectToAction("Index", "Home");
         }
@@ -172,14 +127,23 @@ namespace OrganikBahce.MVC.Controllers
         }
 
         // ================= LOGOUT =================
-
+       
         [Authorize]
         [Route("/logout")]
         [HttpGet]
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            Response.Cookies.Delete("jwt_token");
             return RedirectToAction(nameof(Login));
         }
     }
+
+    public class LoginApiResponse
+    {
+        public string Token { get; set; } = null!;
+        public string Role { get; set; } = null!;
+        public int UserId { get; set; }
+        public string FullName { get; set; } = null!;
+    }
 }
+//deneme
