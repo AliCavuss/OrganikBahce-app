@@ -146,3 +146,4 @@ namespace OrganikBahce.MVC.Controllers
         public string FullName { get; set; } = null!;
     }
 }
+//deneme
